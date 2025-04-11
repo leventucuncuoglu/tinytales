@@ -72,11 +72,12 @@ export default function CreatePage() {
         setTimeout(() => {
           setShowSuccessModal(false);
         }, 3000);
-      } catch (error) {
+      } catch {
         setError('Hikaye yüklenirken bir hata oluştu');
       } finally {
         setLoading(false);
       }
+      
     };
 
     loadStory();
