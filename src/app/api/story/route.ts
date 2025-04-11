@@ -19,7 +19,7 @@ const stories = [
 export async function GET() {
   try {
     return NextResponse.json(stories);
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Hikayeler yüklenirken bir hata oluştu" },
       { status: 500 }
