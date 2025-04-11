@@ -3,6 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Global tip tanımlaması
 declare global {
+  // eslint-disable-next-line no-var
   var stories: Map<string, { title: string; content: string }>;
 }
 
@@ -66,18 +67,21 @@ Hikaye şu özelliklere sahip olmalı:
 Hikaye uzunluğu 800-1000 kelime arasında olmalı ve paragraflar 3-4 kısa cümleden oluşmalı.`;
 
     const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
 
-    return NextResponse.json({
+    const storyId = Date.now().toString();
+    const story = {
       title: `${characterName}'nin ${storyTheme} Macerası`,
       content: text
-    });
+    };
+    global.stories.set(storyId, story);
 
-  } catch (error) {
-    console.error('Hikaye oluşturma hatası:', error);
+    return NextResponse.json({ id: storyId, ...story });
+
+  } catch (err) {
+    console.error('Hikaye oluşturma hatası:', err);
     return NextResponse.json(
       { error: 'Hikaye oluşturulurken bir hata oluştu' },
       { status: 500 }
@@ -106,10 +110,11 @@ export async function GET(request: Request) {
     }
 
     return NextResponse.json(story);
-  } catch (error) {
+  } catch (err) {
+    console.error('Hikaye getirme hatası:', err);
     return NextResponse.json(
       { error: "Hikaye getirilirken bir hata oluştu" },
       { status: 500 }
     );
   }
-} 
+}
