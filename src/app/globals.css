@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer utilities {
+  /* Yıldız animasyonu */
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 1; }
+  }
+
+  .animate-twinkle {
+    animation: twinkle 2s ease-in-out infinite;
+  }
+
+  /* Bulut animasyonu */
+  @keyframes float {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(200%); }
+  }
+
+  /* Sihirli parıltı animasyonu */
+  @keyframes sparkle {
+    0% { transform: scale(0) rotate(0deg); opacity: 0; }
+    50% { transform: scale(1) rotate(180deg); opacity: 1; }
+    100% { transform: scale(0) rotate(360deg); opacity: 0; }
+  }
+
+  .animate-sparkle {
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  /* Sihirli buton hover efekti */
+  .magical-button {
+    background: linear-gradient(45deg, #9333ea, #ec4899);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .magical-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+    transform: scale(0);
+    transition: transform 0.5s ease-out;
+  }
+
+  .magical-button:hover::before {
+    transform: scale(1);
+  }
+}
+
+/* Özel Scrollbar Stili */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(147, 51, 234, 0.3) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(147, 51, 234, 0.3);
+  border-radius: 20px;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(147, 51, 234, 0.5);
+}
+
+/* Arka plan desenleri */
+.stars-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 20px 20px, rgba(147, 51, 234, 0.1) 2px, transparent 0),
+                    radial-gradient(circle at 40px 70px, rgba(236, 72, 153, 0.1) 2px, transparent 0),
+                    radial-gradient(circle at 70px 40px, rgba(59, 130, 246, 0.1) 2px, transparent 0);
+  background-size: 100px 100px;
+  animation: twinkle 3s ease-in-out infinite alternate;
+}
+
+.clouds-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(30% 30% at 20% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 100%),
+    radial-gradient(40% 40% at 70% 60%, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
+  background-size: 200px 200px;
+  animation: float 10s ease-in-out infinite;
+}
+
+.sparkles-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(2px 2px at 40px 60px, #fff 50%, transparent 100%),
+    radial-gradient(2px 2px at 80px 120px, #fff 50%, transparent 100%),
+    radial-gradient(2px 2px at 120px 40px, #fff 50%, transparent 100%);
+  background-size: 150px 150px;
+  animation: sparkle 4s ease-in-out infinite;
+  opacity: 0.3;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes sparkle {
+  0% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.2); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 0.3; }
+}
+
+/* Özel fontlar */
+.font-fredoka {
+  font-family: 'Fredoka', sans-serif;
+}
+
+.font-nunito {
+  font-family: 'Nunito', sans-serif;
+}
+
+/* Sihirli Lamba Animasyonu */
+.magic-sparkles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 30% 50%, rgba(255, 223, 0, 0.4) 0%, transparent 30%),
+    radial-gradient(circle at 70% 50%, rgba(255, 182, 193, 0.4) 0%, transparent 30%),
+    radial-gradient(circle at 50% 30%, rgba(147, 51, 234, 0.4) 0%, transparent 30%),
+    radial-gradient(circle at 50% 70%, rgba(236, 72, 153, 0.4) 0%, transparent 30%);
+  filter: blur(8px);
+  animation: sparkle-float 3s ease-in-out infinite;
+}
+
+@keyframes sparkle-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.1);
+    opacity: 1;
+  }
+}
