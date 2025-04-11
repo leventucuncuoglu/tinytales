@@ -1,18 +1,28 @@
 import { NextResponse } from "next/server";
 
+// Sahte hikaye listesi (ileride veritabanı ile entegre edilebilir)
 const stories = [
   {
     id: "1",
-    title: "Lena'nın Renkli Balonları",
-    content: "Bir gün Lena, gökyüzüne doğru süzülen rengarenk balonları takip etti...",
+    title: "Lena'nın Renkli Yolculuğu",
+    description: "Lena, gökyüzünde uçan renkli bir balonla çıktığı büyülü yolculukta neler yaşayacak?",
+    language: "tr",
   },
   {
     id: "2",
-    title: "Lena ve Minik Ejderha",
-    content: "Lena, ormanda kaybolmuş minik bir ejderha buldu ve ona yardım etmeye karar verdi...",
-  },
+    title: "The Magical Forest of Ava",
+    description: "Ava discovers a talking squirrel in a glowing forest full of surprises!",
+    language: "en",
+  }
 ];
 
 export async function GET() {
-  return NextResponse.json(stories);
+  try {
+    return NextResponse.json(stories);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Hikayeler yüklenirken bir hata oluştu" },
+      { status: 500 }
+    );
+  }
 }
