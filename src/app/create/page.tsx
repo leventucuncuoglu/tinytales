@@ -22,7 +22,6 @@ export default function CreatePage() {
   const searchParams = useSearchParams();
   const [story, setStory] = useState<Story | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   const [showFullStory, setShowFullStory] = useState(false);
@@ -48,19 +47,13 @@ export default function CreatePage() {
         audioRef.current.currentTime = 0;
       }
       // Seslendirmeyi durdur
-      if (synth) {
-        synth.cancel();
-      }
-      setIsPlaying(false);
-      setIsMusicPlaying(false);
     };
-  }, []);
+  }, [volume]);
 
   useEffect(() => {
     const loadStory = () => {
       const storyParam = searchParams.get('story');
       if (!storyParam) {
-        setError('Hikaye verisi bulunamadı');
         setLoading(false);
         return;
       }
@@ -73,7 +66,7 @@ export default function CreatePage() {
           setShowSuccessModal(false);
         }, 3000);
       } catch {
-        setError('Hikaye yüklenirken bir hata oluştu');
+        setLoading(false);
       } finally {
         setLoading(false);
       }

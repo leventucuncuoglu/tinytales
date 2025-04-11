@@ -104,105 +104,62 @@ export default function BookPage() {
       </div>
 
       {/* Kitap Görüntüleyici */}
-      <div className="relative w-[1024px] aspect-[16/9] rounded-3xl overflow-hidden shadow-2xl bg-black/20 backdrop-blur-sm p-2">
+      <div className="relative w-[1024px] h-[768px] bg-white rounded-lg shadow-2xl overflow-hidden">
         <AnimatePresence mode="wait">
-          <motion.div
-            key={currentPage}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0 rounded-2xl overflow-hidden"
-          >
-            {currentPage === -1 ? (
-              <div className="relative w-full h-full">
-                <Image
-                  src={book.image}
-                  alt={book.title}
-                  fill
-                  className="object-contain rounded-2xl"
-                  priority
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-6 z-10">
-                  <h2 className="text-white text-2xl font-bold mb-2">{book.title}</h2>
-                  <p className="text-white/80 text-lg">{book.description}</p>
-                </div>
-              </div>
-            ) : (
-              <div className="relative w-full h-full">
-                <Image
-                  src={book.pages[currentPage].image}
-                  alt={`Sayfa ${currentPage + 1}`}
-                  fill
-                  className="object-contain rounded-2xl"
-                  priority
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-6 z-10">
-                  <p className="text-white text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-                    {book.pages[currentPage].content}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Navigasyon Butonları */}
-            <div className="absolute inset-x-4 inset-y-0 flex items-center justify-between">
-              <button
-                onClick={prevPage}
-                disabled={currentPage === -1}
-                className={`rounded-full p-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white transition-all transform hover:scale-110 shadow-lg ${
-                  currentPage === -1 ? "opacity-50 cursor-not-allowed" : "hover:shadow-xl hover:from-purple-600 hover:to-pink-600"
-                }`}
-              >
-                <ChevronLeft className="w-8 h-8" />
-              </button>
-              <button
-                onClick={toggleAudio}
-                className={`rounded-full p-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white transition-all transform hover:scale-110 shadow-lg ${
-                  currentPage === -1 ? "opacity-50 cursor-not-allowed" : "hover:shadow-xl hover:from-purple-600 hover:to-pink-600"
-                }`}
-              >
-                {isPlaying ? (
-                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                ) : (
-                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                )}
-              </button>
-              <button
-                onClick={nextPage}
-                disabled={currentPage === book.pages.length - 1}
-                className={`rounded-full p-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white transition-all transform hover:scale-110 shadow-lg ${
-                  currentPage === book.pages.length - 1 ? "opacity-50 cursor-not-allowed" : "hover:shadow-xl hover:from-purple-600 hover:to-pink-600"
-                }`}
-              >
-                <ChevronRight className="w-8 h-8" />
-              </button>
-            </div>
-
-            {/* Sayfa Numarası */}
-            <div className="absolute bottom-4 right-4 bg-gradient-to-r from-purple-500/80 to-pink-500/80 backdrop-blur-md rounded-full px-3 py-1 text-white text-sm z-20">
-              {currentPage === -1 ? 'Kapak' : `Sayfa ${currentPage + 1} / ${book.pages.length}`}
-            </div>
-          </motion.div>
+          {currentPage >= 0 && book.pages && book.pages[currentPage] && (
+            <motion.div
+              key={currentPage}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.5 }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              <Image
+                src={book.pages[currentPage].image}
+                alt={`Sayfa ${currentPage + 1}`}
+                width={1024}
+                height={768}
+                className="object-contain"
+              />
+            </motion.div>
+          )}
         </AnimatePresence>
+
+        {/* Sayfa Kontrolleri */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-4">
+          <button
+            onClick={prevPage}
+            disabled={currentPage <= -1}
+            className="p-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors disabled:opacity-50"
+          >
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+          
+          <button
+            onClick={toggleAudio}
+            className="p-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors"
+          >
+            {isPlaying ? (
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            )}
+          </button>
+
+          <button
+            onClick={nextPage}
+            disabled={book.pages && currentPage >= book.pages.length - 1}
+            className="p-2 bg-white/10 backdrop-blur-sm rounded-full hover:bg-white/20 transition-colors disabled:opacity-50"
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+          </button>
+        </div>
       </div>
 
       <style jsx global>{`
-        @keyframes gradient {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .animate-gradient {
-          background-size: 200% 200%;
-          animation: gradient 8s ease infinite;
-        }
-      `}</style>
-    </div>
-  );
-} 
