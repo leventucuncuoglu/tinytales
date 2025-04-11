@@ -9,6 +9,7 @@ import { bookStories } from "@/app/data/stories";
 import Link from "next/link";
 
 interface PageParams {
+  [key: string]: string;
   id: string;
 }
 
@@ -38,6 +39,19 @@ export default function BookPage() {
     }
   }, [book, currentPage, router]);
 
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") {
+        nextPage();
+      } else if (e.key === "ArrowLeft") {
+        prevPage();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [currentPage]); // eslint-disable-line react-hooks/exhaustive-deps
+
   if (!book || !book.pages) {
     return null;
   }
@@ -54,7 +68,7 @@ export default function BookPage() {
   };
 
   const nextPage = () => {
-    if (currentPage < book.pages.length - 1) {
+    if (book.pages && currentPage < book.pages.length - 1) {
       if (audio) {
         audio.pause();
         audio.currentTime = 0;
@@ -74,19 +88,6 @@ export default function BookPage() {
       setCurrentPage(currentPage - 1);
     }
   };
-
-  useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") {
-        nextPage();
-      } else if (e.key === "ArrowLeft") {
-        prevPage();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyPress);
-    return () => window.removeEventListener("keydown", handleKeyPress);
-  }, [currentPage]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#2d1b69] to-[#1a0f40] relative flex flex-col items-center pt-8">
@@ -154,6 +155,23 @@ export default function BookPage() {
                 }`}
               >
                 <ChevronLeft className="w-8 h-8" />
+              </button>
+              <button
+                onClick={toggleAudio}
+                className={`rounded-full p-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white transition-all transform hover:scale-110 shadow-lg ${
+                  currentPage === -1 ? "opacity-50 cursor-not-allowed" : "hover:shadow-xl hover:from-purple-600 hover:to-pink-600"
+                }`}
+              >
+                {isPlaying ? (
+                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                ) : (
+                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                )}
               </button>
               <button
                 onClick={nextPage}
